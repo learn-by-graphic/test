@@ -11,6 +11,7 @@ public class GridBuildingSystem : MonoBehaviour
     public GridLayout gridLayout;
     public Tilemap MainTilemap;
     public Tilemap TempTilemap;
+    public Player player;
 
     private static Dictionary<TileType, TileBase> tileBases = new Dictionary<TileType, TileBase>();
 
@@ -29,9 +30,9 @@ public class GridBuildingSystem : MonoBehaviour
     {
         string tilePath = @"Tiles\";
         tileBases.Add(TileType.Empty, null);
-        tileBases.Add(TileType.White, Resources.Load<TileBase>(tilePath + "white"));
-        tileBases.Add(TileType.Green, Resources.Load<TileBase>(tilePath + "green"));
-        tileBases.Add(TileType.Red, Resources.Load<TileBase>(tilePath + "red"));
+        tileBases.Add(TileType.White, Resources.Load<TileBase>(tilePath + "ground_grass"));
+        tileBases.Add(TileType.Green, Resources.Load<TileBase>(tilePath + "green2"));
+        tileBases.Add(TileType.Red, Resources.Load<TileBase>(tilePath + "red2"));
     }
 
     private void Update()
@@ -169,6 +170,23 @@ public class GridBuildingSystem : MonoBehaviour
         }
 
         return true;
+    }
+
+    public bool CheckEnoughResource(Building building)
+    {
+        if ((player.population>=building.populationNeed)
+            &&(player.energy>=building.energyNeed)
+            &&(player.wood>=building.woodNeed)
+            &&(player.stone>=building.stoneNeed)
+            &&(player.iron>=building.ironNeed))
+        {
+            player.population -= 5;
+            player.energy -= 10;
+            player.wood -= 20;
+            player.stone -= 10;
+            return true;
+        }
+        return false;
     }
 
     public void TakeArea(BoundsInt area)
